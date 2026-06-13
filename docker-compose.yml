@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  app:
+    # Build from our Dockerfile in current directory
+    build: .
+    
+    # Container name
+    container_name: devops-cicd-app
+    
+    # Map port 3000 on your machine → port 3000 in the container
+    ports:
+      - "3000:3000"
+    
+    # Restart container automatically if it crashes
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - NODE_ENV=production
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
